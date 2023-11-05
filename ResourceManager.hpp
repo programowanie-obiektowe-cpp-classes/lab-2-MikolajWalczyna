@@ -4,15 +4,18 @@
 
 class ResourceManager {
 private:
-    Resource managedResource;
-
+    Resource* managedResource;
+    
 public:
-    ResourceManager() :managedResource() {
-        // Konstruktor domyślny - zarządza zasobem poprzez inicjalizację
+    ResourceManager()
+    {
+        managedResource = new Resource();
+        // Konstruktor domyślny
     }
 
     ~ResourceManager() {
-        // Destruktor - zasób zostanie automatycznie zwolniony
+        delete managedResource;
+        // Destruktor
     }
 
     /*
@@ -26,14 +29,16 @@ public:
     Referencję rvalue (T&&), gdy chcemy obsłużyć sytuację, w której nasza funkcja przejmuje własność nad jakimś obiektem.
     Często stosujemy tę opcję obok innych przeciążeń (np. obok stałej referencji) jako optymalizacja dla szczególnego przypadku.
 */
-    ResourceManager(const ResourceManager& other) : managedResource(other.managedResource) {
+    ResourceManager(const ResourceManager& other) {
+        managedResource = new Resource();
+        *managedResource = *other.managedResource;
         // Konstruktor kopiujący - kopiujemy zarządzany zasób
     }
 
     ResourceManager& operator=(const ResourceManager& other) {
         // Operator przypisania - przypisujemy zarządzany zasób
         if (this != &other) {
-            managedResource = other.managedResource;
+            *managedResource = *other.managedResource;
         }
         return *this;
     }
@@ -45,20 +50,21 @@ public:
     W kontekście konstruktora przenoszącego w klasie ResourceManager, noexcept jest używane, aby oznaczyć, że operacja przenoszenia zarządzanego zasobu nie powinna generować wyjątków.
     Działa to jako informacja dla kompilatora i optymalizatora, co może poprawić wydajność programu w przypadku operacji przenoszenia.*/
 
-    ResourceManager(ResourceManager&& other) noexcept : managedResource(std::move(other.managedResource)) {
+    ResourceManager(ResourceManager&& other) {
         // Konstruktor przenoszący - przenosimy zarządzany zasób
+        managedResource = (other.managedResource);
+        other.managedResource = nullptr;
     }
 
     ResourceManager& operator=(ResourceManager&& other) noexcept {
         // Operator przypisania przenoszący - przenosimy zarządzany zasób
-        if (this != &other) {
-            managedResource = std::move(other.managedResource);
-        }
-        return *this;
+        delete managedResource;
+        managedResource = other.managedResource;
+        other.managedResource = nullptr;
     }
 
     double get() {
         // Delegujemy wywołanie do metody get zarządzanego zasobu
-        return managedResource.get();
+        return resource.get();
     }
 };
