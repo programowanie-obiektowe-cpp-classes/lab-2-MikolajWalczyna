@@ -9,12 +9,10 @@ private:
 public:
     ResourceManager() :managedResource() {
         // Konstruktor domyślny - zarządza zasobem poprzez inicjalizację
-        std::cout << "ResourceManager constructed" << std::endl;
     }
 
     ~ResourceManager() {
         // Destruktor - zasób zostanie automatycznie zwolniony
-        std::cout << "ResourceManager destructed" << std::endl;
     }
 
     /*
@@ -30,12 +28,10 @@ public:
 */
     ResourceManager(const ResourceManager& other) : managedResource(other.managedResource) {
         // Konstruktor kopiujący - kopiujemy zarządzany zasób
-        std::cout << "ResourceManager copied" << std::endl;
     }
 
     ResourceManager& operator=(const ResourceManager& other) {
         // Operator przypisania - przypisujemy zarządzany zasób
-        std::cout << "ResourceManager copied (assignment)" << std::endl;
         if (this != &other) {
             managedResource = other.managedResource;
         }
@@ -51,12 +47,10 @@ public:
 
     ResourceManager(ResourceManager&& other) noexcept : managedResource(std::move(other.managedResource)) {
         // Konstruktor przenoszący - przenosimy zarządzany zasób
-        std::cout << "ResourceManager moved" << std::endl;
     }
 
     ResourceManager& operator=(ResourceManager&& other) noexcept {
         // Operator przypisania przenoszący - przenosimy zarządzany zasób
-        std::cout << "ResourceManager moved (assignment)" << std::endl;
         if (this != &other) {
             managedResource = std::move(other.managedResource);
         }
