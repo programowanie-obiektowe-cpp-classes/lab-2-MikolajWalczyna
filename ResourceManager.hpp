@@ -56,7 +56,7 @@ public:
         other.managedResource = nullptr;
     }
 
-    ResourceManager& operator=(ResourceManager&& other) noexcept {
+    ResourceManager& operator=(ResourceManager&& other) {
         // Operator przypisania przenoszący - przenosimy zarządzany zasób
         delete managedResource;
         managedResource = other.managedResource;
@@ -65,6 +65,6 @@ public:
 
     double get() {
         // Delegujemy wywołanie do metody get zarządzanego zasobu
-        return resource.get();
+        return Resource.get();
     }
 };
