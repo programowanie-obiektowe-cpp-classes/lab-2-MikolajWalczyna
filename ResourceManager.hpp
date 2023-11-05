@@ -65,6 +65,6 @@ public:
 
     double get() {
         // Delegujemy wywołanie do metody get zarządzanego zasobu
-        return Resource.get();
+        return managedResource->get();
     }
 };
